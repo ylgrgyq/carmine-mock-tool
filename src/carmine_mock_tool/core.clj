@@ -14,10 +14,11 @@
 
 (defn fake-replies
   [replyGen body-fn as-pipeline?]
-  (body-fn)
-  (if as-pipeline?
-    (vector (replyGen))
-    (replyGen)))
+  (let [reply (replyGen)]
+    (body-fn)
+    (if (and as-pipeline? (not (vector? reply)))
+      (reverse (into [] reply))
+      reply)))
 
 (defmacro mock-funs [mocked-funs & body]
   `(with-redefs ~(list* (reduce (fn [ret next]
