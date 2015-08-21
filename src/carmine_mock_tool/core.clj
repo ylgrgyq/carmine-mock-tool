@@ -14,7 +14,7 @@
         connect (Connection. socket "12323" 123 23)]
     [pool connect]))
 
-(defn- fake-replies [replyGen body-fn as-pipeline?]
+(defn fake-replies [replyGen body-fn as-pipeline?]
   (let [start @*counter*
         _ (body-fn)
         reply (if (fn? replyGen)
