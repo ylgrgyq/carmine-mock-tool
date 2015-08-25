@@ -1,8 +1,6 @@
 # carmine-mock-tool
 
-[com.taoensso/carmine](https://github.com/ptaoussanis/carmine) is a great redis client. Easy to use and have has great docs. But it has only one defect that it is difficult to test. You always need to start a redis server on your local machine and use it to ensure your code is correct. If you have a CI for your project, and want to test your code 
-
-A Clojure library designed to mock com.taoensso/carmine (a famous redis client written in clojure).
+[com.taoensso/carmine](https://github.com/ptaoussanis/carmine) is a great redis client. Easy to use and have great docs. But it has a annoying defect that it is difficult to write unit test.
 
 ## Usage
 
