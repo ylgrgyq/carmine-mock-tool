@@ -1,10 +1,10 @@
 # carmine-mock-tool
 
-[com.taoensso/carmine](https://github.com/ptaoussanis/carmine) is a great redis client. Easy to use and have great docs. But it has a annoying defect that it is difficult to write unit test.
+A mocking tool for [com.taoensso/carmine](https://github.com/ptaoussanis/carmine) 
 
 ## Usage
 
-For instance, here's some code using carmine to set a value for a key to redis.
+For instance, here's some code using carmine to save some value for a key into redis.
 ```clojure
 (defmacro wcar* [& body]
   `(car/wcar
@@ -16,7 +16,7 @@ For instance, here's some code using carmine to set a value for a key to redis.
     (car/set key value)))
 ```
 
-And, you can mock car/set and test the parameters passed to car/set like this
+And, you can mock car/set and test the parameters passed to car/set as follows:
 ```clojure
 (deftest test-foo
   (let [key "dummy-key"
@@ -24,29 +24,37 @@ And, you can mock car/set and test the parameters passed to car/set like this
 	ret "OK"]
     (mock-carmine-redis-client (constantly ret)
       [car/set (fn [k v]
+		 ;; check parmeters
       	         (is (= key k))
-		 (is (= value v)))]
+		 (is (= value v))
+	         ;; return what redis will return
+		 "OK")]
       (is (= "OK" (foo key value))))))
 ```
 
 For carmine redis command called more than one times in a sigle function. 
 ```clojure
 (defn foo [key value1 value2]
-  (wcar*
-    (car/sadd key value1)
-    (car/expire key 1800))
-  (wcar*
-    (car/set value2)))
+  (let [[members _] (wcar*
+    		      (car/smembers key value1)
+    		      (car/expire key 1800))]
+    (when (empty? members)
+      (wcar*
+        (car/set value2))))
 
 (deftest test-foo
   (let [key "dummy-key"
         value1 "dummy-value1"
 	value2 "dummy-value2"
-        ret [["OK" "OK"] "OK"]]
+        ret [["OK" "OK"] "OK"]
+	members [1 2 3]
     (mock-carmine-redis-client ret
-      [car/sadd (fn [k v]
+      [car/smembers (fn [k v]
+        	 ;; check parmeters
                  (is (= key k))
-                 (is (= value v)))
+                 (is (= value v))
+		 ;; return what redis will return
+		 members)
        car/expire (fn [k v]
                     ; do some check
 		    )
