@@ -36,8 +36,8 @@ For carmine redis command called more than one times in a sigle function.
 ```clojure
 (defn foo [key value1 value2]
   (let [[members _] (wcar*
-    		      (car/smembers key value1)
-    		      (car/expire key 1800))]
+                      (car/smembers key value1)
+                      (car/expire key 1800))]
     (when (empty? members)
       (wcar*
         (car/set value2)))))
@@ -45,7 +45,7 @@ For carmine redis command called more than one times in a sigle function.
 (deftest test-foo
   (let [key "dummy-key"
         value1 "dummy-value1"
-	value2 "dummy-value2"
+        value2 "dummy-value2"
         ret "OK"
 	members [1 2 3]]
     (mock-carmine-redis-client ret
