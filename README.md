@@ -29,7 +29,7 @@ And, you can mock car/set and test the parameters passed to car/set as follows:
                  (is (= value v))
                  ;; return what redis will return
                  "OK")]
-      (is (= "OK" (foo key value))))))
+      (is (= ret (foo key value))))))
 ```
 
 For carmine redis command called more than one times in a sigle function. 
@@ -40,28 +40,28 @@ For carmine redis command called more than one times in a sigle function.
     		      (car/expire key 1800))]
     (when (empty? members)
       (wcar*
-        (car/set value2))))
+        (car/set value2)))))
 
 (deftest test-foo
   (let [key "dummy-key"
         value1 "dummy-value1"
 	value2 "dummy-value2"
-        ret [["OK" "OK"] "OK"]
-	members [1 2 3]
+        ret "OK"
+	members [1 2 3]]
     (mock-carmine-redis-client ret
       [car/smembers (fn [k v]
                  ;; check parmeters
                  (is (= key k))
                  (is (= value v))
                  ;; return what redis will return
-		 members)
+                 members)
        car/expire (fn [k v]
                     ; do some check
-                    )
+                    "OK")
        car/set (fn [k v]
                  ; do some check
-                 )]
-      (foo key value1 value2))))
+                 "OK")]
+      (is (= ret (foo key value1 value2))))))
 ```
 
 ## License
