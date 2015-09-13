@@ -47,7 +47,7 @@ For carmine redis command called more than one times in a sigle function.
   (let [key "dummy-key"
         value1 "dummy-value1"
         value2 "dummy-value2"
-	members [1 2 3]
+        members [1 2 3]
         ret [[members "OK"] "OK"]
     (mock-carmine-redis-client ret
       [car/smembers (fn [k v]
