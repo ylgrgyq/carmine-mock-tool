@@ -48,6 +48,6 @@
   `(binding [*counter* (atom 0)]
      (let [reply# ~reply-gen]
        (with-redefs [conn/pooled-conn fake-pool
-                     protocol/with-replies* (partial fake-replies reply#)]
+                     protocol/-with-replies (partial fake-replies reply#)]
          (mock-funs-new [~@mocked-commands] ~@body)
          (reset! *counter* 0)))))
