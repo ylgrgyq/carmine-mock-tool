@@ -2,8 +2,7 @@
   (:require [taoensso.carmine.connections :as conn]
             [taoensso.carmine.protocol :as protocol])
   (:import (java.net Socket)
-           (taoensso.carmine.connections NonPooledConnectionPool Connection)
-           (taoensso.carmine.connections NonPooledConnectionPool)))
+           (taoensso.carmine.connections NonPooledConnectionPool Connection)))
 
 (def ^:dynamic *counter* nil)
 
