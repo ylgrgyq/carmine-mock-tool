@@ -2,8 +2,7 @@
   (:require [taoensso.carmine.connections :as conn]
             [taoensso.carmine.protocol :as protocol])
   (:import (java.net Socket)
-           (taoensso.carmine.connections NonPooledConnectionPool Connection)
-           (taoensso.carmine.connections NonPooledConnectionPool)))
+           (taoensso.carmine.connections NonPooledConnectionPool Connection)))
 
 (def ^:dynamic *counter* nil)
 
@@ -48,6 +47,6 @@
   `(binding [*counter* (atom 0)]
      (let [reply# ~reply-gen]
        (with-redefs [conn/pooled-conn fake-pool
-                     protocol/with-replies* (partial fake-replies reply#)]
+                     protocol/-with-replies (partial fake-replies reply#)]
          (mock-funs-new [~@mocked-commands] ~@body)
          (reset! *counter* 0)))))
