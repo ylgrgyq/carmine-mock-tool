@@ -4,6 +4,10 @@ A mocking tool for [com.taoensso/carmine](https://github.com/ptaoussanis/carmine
 
 ## Usage
 
+### Leiningen/Boot
+
+<img src="https://clojars.org/carmine-mock-tool/latest-version.svg">
+
 For instance, here's some code using carmine to save some value for a key into redis.
 ```clojure
 (defmacro wcar* [& body]
